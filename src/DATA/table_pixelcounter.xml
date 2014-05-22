@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<table name="pixelcounter" prefix="yes">
+  <fields>
+    <field name="page_id" type="integer" size="8" null="no"/>
+    <field name="pixelcounter_code" type="string" size="255" null="no"/>
+    <field name="pixelcounter_mode" type="integer" size="2" null="no"/>
+    <field name="pixelcounter_comment" type="string" size="255" null="no"/>
+    <field name="pixelcounter_status" type="integer" size="2" null="no"/>
+  </fields>
+  <keys>
+    <primary-key>
+      <field>page_id</field>
+    </primary-key>
+  </keys>
+</table>

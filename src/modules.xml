@@ -1,0 +1,18 @@
+<?xml version="1.0"  encoding="ISO-8859-1" ?>
+  <modulegroup>
+  <name>Pixelcounter</name>
+  <description>External statistics data administration and embed modules</description>
+  <modules>
+    <module type="admin" guid="b0d262b34bedbf029a02f5aba22ce88f" name="Pixelcounter" class="edmodule_pixelcounter" file="edmodule_pixelcounter.php" glyph="pixelcounter.png">Counter data for papaya pages</module>
+    <module type="box" guid="8594158c504b6c4724652340c51ab36a" name="IVW SZM embed" class="actionbox_ivw" file="actbox_ivw.php" outputfilter="no">IVW SZM pixel embed using javascript, based on ivw data connected to page ids</module>
+    <module type="box" guid="776209f551a1a04355ed3365184ee252" name="Omniture embed" class="actionbox_omniture" file="actbox_omniture.php">Omniture embed</module>
+    <module type="box" guid="a8bd8fde45994eada043e75c719b46f7" name="WebTrends embed" class="actionbox_webtrends" file="actbox_webtrends.php">WebTrends embed</module>
+    <module type="box" guid="64b0eb64d14677e28d87de12542299bb" name="eTracker embed" class="actionbox_etracker" file="actbox_etracker.php">eTracker embed</module>
+    <module type="connector" guid="f91561689bce286c7dea1c1efdc592bc" name="Pixelcounter Base" class="base_pixelcounter" file="base_pixelcounter.php">Pixelcounter base class can be used as connector.</module>
+  </modules>
+  <tables>
+    <table name="pixelcounter" />
+    <table name="pixelcounter_subpages" />
+    <table name="pixelcounter_params" />
+  </tables>
+</modulegroup>

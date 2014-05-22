@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<table name="pixelcounter_params" prefix="yes">
+  <fields>
+    <field name="page_id" type="integer" size="8" null="no"/>
+    <field name="parameter_name" type="string" size="50" null="no"/>
+    <field name="parameter_data" type="string" size="65535" null="no"/>
+  </fields>
+  <keys>
+    <primary-key>
+      <field>page_id</field>
+      <field>parameter_name</field>
+    </primary-key>
+  </keys>
+</table>
