@@ -1,23 +1,23 @@
 <?php
 /**
-* Action box for eTracker statistik embeds
-*
-* @package Papaya-Commercial
-* @subpackage Pixelcounter
-* @version $Id: actbox_etracker.php 2 2013-12-09 14:16:49Z weinert $
-*/
+ * Action box for eTracker statistik embeds
+ *
+ * @package Papaya-Commercial
+ * @subpackage Pixelcounter
+ * @version $Id: actbox_etracker.php 8 2015-04-24 13:08:10Z weinert $
+ */
 
 /**
-* Basic class Aktion box
-*/
+ * Basic class Aktion box
+ */
 require_once(PAPAYA_INCLUDE_PATH.'system/base_actionbox.php');
 
 /**
-* Action box for eTracker statistik embeds
-*
-* @package Papaya-Commercial
-* @subpackage Pixelcounter
-*/
+ * Action box for eTracker statistik embeds
+ *
+ * @package Papaya-Commercial
+ * @subpackage Pixelcounter
+ */
 class actionbox_etracker extends base_actionbox {
 
   var $cacheDependency = array(
@@ -47,11 +47,11 @@ class actionbox_etracker extends base_actionbox {
   );
 
   /**
-  * Get parsed data
-  *
-  * @access public
-  * @return string
-  */
+   * Get parsed data
+   *
+   * @access public
+   * @return string
+   */
   function getParsedData() {
     $this->setDefaultData();
     if (isset($this->parentObj) && is_subclass_of($this->parentObj, 'base_topic')) {
@@ -76,7 +76,7 @@ class actionbox_etracker extends base_actionbox {
             "source" => 'page-properties'
           ),
           $this->parentObj->topic['TRANSLATION']['topic_title']
-         );
+        );
       } else {
         $etracker->appendElement(
           'page',
@@ -147,6 +147,25 @@ class actionbox_etracker extends base_actionbox {
       return $etracker->saveXml();
     }
     return '';
+  }
+
+  public function getParsedAttributes() {
+    $this->setDefaultData();
+    if (isset($this->parentObj) && is_subclass_of($this->parentObj, 'base_topic')) {
+      include_once(dirname(__FILE__).'/base_pixelcounter.php');
+      $pageDataObject = new base_pixelcounter();
+      $pageData = $pageDataObject->loadCounterStatus($this->parentObj);
+      return array(
+        'etracker_account' => $this->data['account'],
+        'etracker_version' => $this->data['tracklet_version'],
+        'page_code' => empty($pageData['pixelcounter_code']) ? '' : $pageData['pixelcounter_code']
+      );
+    } else {
+      return array(
+        'etracker_account' => $this->data['account'],
+        'etracker_version' => $this->data['tracklet_version']
+      );
+    }
   }
 
   public function callbackGetOutputModes($name, $field, $data) {
