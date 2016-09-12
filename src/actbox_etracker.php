@@ -65,7 +65,7 @@ class actionbox_etracker extends base_actionbox {
         array(
           'account' => $this->data['account'],
           'version' => $this->data['tracklet_version'],
-          'language' => $this->parentObj->currentLanguage['lng_short']
+          'language' => $this->parentObj->currentLanguage['code']
         )
       );
       if (empty($pageData['pixelcounter_code'])) {
