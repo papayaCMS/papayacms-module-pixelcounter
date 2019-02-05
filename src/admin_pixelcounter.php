@@ -78,7 +78,7 @@ class admin_pixelcounter extends base_pixelcounter {
   */
   function execute() {
     include_once(PAPAYA_INCLUDE_PATH.'system/base_language_select.php');
-    $this->lngSelect = &base_language_select::getInstance();
+    $this->lngSelect = base_language_select::getInstance();
 
     include_once(PAPAYA_INCLUDE_PATH.'system/base_topic_edit.php');
     $this->page = new base_topic_edit();
@@ -441,7 +441,7 @@ class admin_pixelcounter extends base_pixelcounter {
         $result .= sprintf(
           '<subitem align="right"><a href="%s"><glyph src="%s" hint="%s"/></a></subitem>'.LF,
           papaya_strings::escapeHTMLChars(
-            $this->getLink(array('page_id' => $id), 'tt', 'topic.php')
+            $this->getLink(array('page_id' => $id), 'tt', 'pages.edit')
           ),
           papaya_strings::escapeHTMLChars($this->images['actions-edit']),
           papaya_strings::escapeHTMLChars($this->_gt('Edit page'))
@@ -1099,4 +1099,3 @@ class admin_pixelcounter extends base_pixelcounter {
     return $comment;
   }
 }
-
