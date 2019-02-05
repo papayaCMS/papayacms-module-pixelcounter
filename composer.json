@@ -1,6 +1,5 @@
 {
   "name": "papaya/module-pixelcounter",
-  "minimum-stability": "dev",
   "extra" : {
     "document-root" : "htdocs/"
   },
