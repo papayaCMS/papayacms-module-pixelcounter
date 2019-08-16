@@ -8,6 +8,7 @@
     <module type="box" guid="776209f551a1a04355ed3365184ee252" name="Omniture embed" class="actionbox_omniture" file="actbox_omniture.php">Omniture embed</module>
     <module type="box" guid="a8bd8fde45994eada043e75c719b46f7" name="WebTrends embed" class="actionbox_webtrends" file="actbox_webtrends.php">WebTrends embed</module>
     <module type="box" guid="64b0eb64d14677e28d87de12542299bb" name="eTracker embed" class="actionbox_etracker" file="actbox_etracker.php">eTracker embed</module>
+    <module type="box" guid="8b1b13c7047375b6411ef6b0fadef9a5" name="Matomo embed" class="\Papaya\Pixelcounter\MatomoBox" file="MatomoBox.php">eTracker embed</module>
     <module type="connector" guid="f91561689bce286c7dea1c1efdc592bc" name="Pixelcounter Base" class="base_pixelcounter" file="base_pixelcounter.php">Pixelcounter base class can be used as connector.</module>
   </modules>
   <tables>
