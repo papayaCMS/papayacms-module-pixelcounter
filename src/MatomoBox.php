@@ -24,13 +24,13 @@ namespace Papaya\Pixelcounter {
 
     const FIELD_USE_COOKIES = 'matomo-use-cookies';
     const FIELD_SECURE_COOKIES = 'matomo-secure-cookies';
+    const FIELD_COOKIES_DOMAIN = 'matomo-cookies-domain';
     const FIELD_COOKIES_PREFIX = 'matomo-cookies-prefix';
     const FIELD_COOKIES_PATH = 'matomo-cookies-path';
     const FIELD_VISITOR_COOKIE_TIMEOUT = 'matomo-visitor-cookie-timeout';
     const FIELD_REFERRAL_COOKIE_TIMEOUT = 'matomo-referral-cookie-timeout';
     const FIELD_SESSION_COOKIE_TIMEOUT = 'matomo-session-cookie-timeout';
 
-    const FIELD_EVENT_EXTENSIONS_CLICK = 'event-extensions-click';
     const FIELD_EVENT_EXTENSIONS_DOWNLOAD = 'event-extensions-download';
     const FIELD_EVENT_EXTENSIONS_LINK = 'event-extensions-link';
 
@@ -39,12 +39,12 @@ namespace Papaya\Pixelcounter {
       self::FIELD_WEBSITE_ID => '',
       self::FIELD_USE_COOKIES => 0,
       self::FIELD_SECURE_COOKIES => 0,
+      self::FIELD_COOKIES_DOMAIN => '',
       self::FIELD_COOKIES_PATH => '/',
       self::FIELD_COOKIES_PREFIX => 'pk',
       self::FIELD_VISITOR_COOKIE_TIMEOUT => 13 * 30 * 86400,
       self::FIELD_REFERRAL_COOKIE_TIMEOUT => 6 * 30 * 86400,
       self::FIELD_SESSION_COOKIE_TIMEOUT => 30 * 60,
-      self::FIELD_EVENT_EXTENSIONS_CLICK => [],
       self::FIELD_EVENT_EXTENSIONS_DOWNLOAD => [],
       self::FIELD_EVENT_EXTENSIONS_LINK => [],
     ];
@@ -72,13 +72,14 @@ namespace Papaya\Pixelcounter {
       $cookies = $tracker->appendElement(
         'cookies',
         [
-          'enabled' => $useCookies ? 'true' : 'false',
-          'secure' => $secureCookies ? 'true' : 'false',
-          'path' =>  $content->get(self::FIELD_COOKIES_PATH, self::_DEFAULTS[self::FIELD_COOKIES_PATH]),
-          'prefix' => $content->get(self::FIELD_COOKIES_PREFIX, self::_DEFAULTS[self::FIELD_COOKIES_PREFIX]),
+          'enabled' => $useCookies ? 'true' : 'false'
         ]
       );
       if ($useCookies) {
+        $cookies->setAttribute('secure', $secureCookies ? 'true' : 'false');
+        $cookies->setAttribute('domain',  $content->get(self::FIELD_COOKIES_DOMAIN, self::_DEFAULTS[self::FIELD_COOKIES_DOMAIN]));
+        $cookies->setAttribute('path',  $content->get(self::FIELD_COOKIES_PATH, self::_DEFAULTS[self::FIELD_COOKIES_PATH]));
+        $cookies->setAttribute('prefix', $content->get(self::FIELD_COOKIES_PREFIX, self::_DEFAULTS[self::FIELD_COOKIES_PREFIX]));
         $timeouts = $cookies->appendElement(
           'timeouts',
           [
@@ -157,17 +158,6 @@ namespace Papaya\Pixelcounter {
         $eventsNode->appendElement(
           'event',
           [
-            'name' => 'click',
-            'extensions' => $this->getTokenString(
-              $content->get(
-                self::FIELD_EVENT_EXTENSIONS_CLICK, self::_DEFAULTS[self::FIELD_EVENT_EXTENSIONS_CLICK]
-              )
-            )
-          ]
-        );
-        $eventsNode->appendElement(
-          'event',
-          [
             'name' => 'download',
             'extensions' => $this->getTokenString(
               $content->get(
@@ -215,6 +205,12 @@ namespace Papaya\Pixelcounter {
       );
       $field->setDefaultValue(self::_DEFAULTS[self::FIELD_SECURE_COOKIES]);
       $group->fields[] = $field = new Input(
+        new TranslatedText('Domain'),
+        self::FIELD_COOKIES_DOMAIN,
+        200,
+        self::_DEFAULTS[self::FIELD_COOKIES_DOMAIN]
+      );
+      $group->fields[] = $field = new Input(
         new TranslatedText('Prefix'),
         self::FIELD_COOKIES_PREFIX,
         10,
@@ -246,12 +242,6 @@ namespace Papaya\Pixelcounter {
       );
 
       $dialog->fields[] = $group = new Dialog\Field\Group(new TranslatedText('Events'));
-      $group->fields[] = $field = new Dialog\Field\Select\Checkboxes(
-        new TranslatedText('Click Extensions'),
-        self::FIELD_EVENT_EXTENSIONS_CLICK,
-        new \Papaya\Iterator\ArrayMapper($this->viewModes(), 'extension'),
-        FALSE
-      );
       $group->fields[] = $field = new Dialog\Field\Select\Checkboxes(
         new TranslatedText('Download Extensions'),
         self::FIELD_EVENT_EXTENSIONS_DOWNLOAD,
