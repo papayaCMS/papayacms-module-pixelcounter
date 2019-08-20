@@ -34,6 +34,11 @@ namespace Papaya\Pixelcounter {
     const FIELD_EVENT_EXTENSIONS_DOWNLOAD = 'event-extensions-download';
     const FIELD_EVENT_EXTENSIONS_LINK = 'event-extensions-link';
 
+    const FIELD_DIMENSION_LANGUAGE = 'matomo-dimension-language';
+    const FIELD_DIMENSION_OUTPUT_MODE = 'matomo-dimension-output-mode';
+    const FIELD_DIMENSION_PAGE_ID = 'matomo-dimension-page-id';
+    const FIELD_DIMENSION_CATEGORY = 'matomo-dimension-category';
+
     const _DEFAULTS = [
       self::FIELD_SERVER_URL => '',
       self::FIELD_WEBSITE_ID => '',
@@ -46,11 +51,24 @@ namespace Papaya\Pixelcounter {
       self::FIELD_REFERRAL_COOKIE_TIMEOUT => 6 * 30 * 86400,
       self::FIELD_SESSION_COOKIE_TIMEOUT => 30 * 60,
       self::FIELD_EVENT_EXTENSIONS_DOWNLOAD => [],
-      self::FIELD_EVENT_EXTENSIONS_LINK => [],
+      self::FIELD_EVENT_EXTENSIONS_LINK => []
+    ];
+
+    const _DIMENSION_FIELDS = [
+      self::FIELD_DIMENSION_CATEGORY => 'Category',
+      self::FIELD_DIMENSION_LANGUAGE => 'Languages',
+      self::FIELD_DIMENSION_OUTPUT_MODE => 'Output Mode',
+      self::FIELD_DIMENSION_PAGE_ID => 'Page Id'
+    ];
+    const _DIMENSION_ATTRIBUTES = [
+      self::FIELD_DIMENSION_CATEGORY => 'category',
+      self::FIELD_DIMENSION_LANGUAGE => 'language',
+      self::FIELD_DIMENSION_OUTPUT_MODE => 'output-mode',
+      self::FIELD_DIMENSION_PAGE_ID => 'page-id'
     ];
 
     private $_viewModes;
-    private $__parentPage;
+    private $_parentPage;
     private $_pixelCounter;
 
     public function __construct($parentPage = NULL) {
@@ -64,7 +82,8 @@ namespace Papaya\Pixelcounter {
         [
           'href' => $content->get(self::FIELD_SERVER_URL, self::_DEFAULTS[self::FIELD_SERVER_URL]),
           'website-id' => $content->get(self::FIELD_WEBSITE_ID, self::_DEFAULTS[self::FIELD_WEBSITE_ID]),
-          'language' => $this->papaya()->request->language->code
+          'language' => $this->papaya()->request->language->code,
+          'page-id' => $this->papaya()->request->pageId
         ]
       );
       $useCookies = $content->get(self::FIELD_USE_COOKIES, self::_DEFAULTS[self::FIELD_USE_COOKIES]);
@@ -77,9 +96,15 @@ namespace Papaya\Pixelcounter {
       );
       if ($useCookies) {
         $cookies->setAttribute('secure', $secureCookies ? 'true' : 'false');
-        $cookies->setAttribute('domain',  $content->get(self::FIELD_COOKIES_DOMAIN, self::_DEFAULTS[self::FIELD_COOKIES_DOMAIN]));
-        $cookies->setAttribute('path',  $content->get(self::FIELD_COOKIES_PATH, self::_DEFAULTS[self::FIELD_COOKIES_PATH]));
-        $cookies->setAttribute('prefix', $content->get(self::FIELD_COOKIES_PREFIX, self::_DEFAULTS[self::FIELD_COOKIES_PREFIX]));
+        $cookies->setAttribute(
+          'domain', $content->get(self::FIELD_COOKIES_DOMAIN, self::_DEFAULTS[self::FIELD_COOKIES_DOMAIN])
+        );
+        $cookies->setAttribute(
+          'path', $content->get(self::FIELD_COOKIES_PATH, self::_DEFAULTS[self::FIELD_COOKIES_PATH])
+        );
+        $cookies->setAttribute(
+          'prefix', $content->get(self::FIELD_COOKIES_PREFIX, self::_DEFAULTS[self::FIELD_COOKIES_PREFIX])
+        );
         $timeouts = $cookies->appendElement(
           'timeouts',
           [
@@ -95,7 +120,13 @@ namespace Papaya\Pixelcounter {
           ]
         );
       }
-
+      $dimensions = $tracker->appendElement('dimensions');
+      foreach (self::_DIMENSION_ATTRIBUTES as $fieldName => $attributeName) {
+        $dimensionId = $content->get($fieldName, 0);
+        if ($dimensionId > 0) {
+          $dimensions->setAttribute($attributeName, $dimensionId);
+        }
+      }
       if ($this->_parentPage instanceof \base_topic) {
         $pixelCounter = $this->pixelCounter();
         $pageData = $pixelCounter->loadCounterStatus($this->_parentPage);
@@ -254,6 +285,12 @@ namespace Papaya\Pixelcounter {
         new \Papaya\Iterator\ArrayMapper($this->viewModes(), 'extension'),
         FALSE
       );
+
+      $dialog->fields[] = $group = new Dialog\Field\Group(new TranslatedText('Dimensions'));
+      foreach (self::_DIMENSION_FIELDS as $fieldName => $label) {
+        $group->fields[] = $field = new Input(new TranslatedText($label), $fieldName, 10, 0);
+      }
+
       return $editor;
     }
 
