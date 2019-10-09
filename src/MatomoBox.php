@@ -20,7 +20,9 @@ namespace Papaya\Pixelcounter {
     use EditablePlugin\Content\Aggregation;
 
     const FIELD_SERVER_URL = 'matomo-server-url';
-    const FIELD_WEBSITE_ID = 'motomo-domain-id';
+    const FIELD_WEBSITE_ID = 'matomo-domain-id';
+
+    const FIELD_ALLOW_PREVIEW = 'matomo-allow-preview';
 
     const FIELD_USE_COOKIES = 'matomo-use-cookies';
     const FIELD_SECURE_COOKIES = 'matomo-secure-cookies';
@@ -43,6 +45,7 @@ namespace Papaya\Pixelcounter {
     const _DEFAULTS = [
       self::FIELD_SERVER_URL => '',
       self::FIELD_WEBSITE_ID => '',
+      self::FIELD_ALLOW_PREVIEW => false,
       self::FIELD_USE_COOKIES => 0,
       self::FIELD_SECURE_COOKIES => 0,
       self::FIELD_COOKIES_DOMAIN => '',
@@ -84,6 +87,8 @@ namespace Papaya\Pixelcounter {
         [
           'href' => $content->get(self::FIELD_SERVER_URL, self::_DEFAULTS[self::FIELD_SERVER_URL]),
           'website-id' => $content->get(self::FIELD_WEBSITE_ID, self::_DEFAULTS[self::FIELD_WEBSITE_ID]),
+          'allow-preview' => $content->get(self::FIELD_ALLOW_PREVIEW, self::_DEFAULTS[self::FIELD_ALLOW_PREVIEW])
+            ? 'true' : 'false',
           'language' => $this->papaya()->request->language->code,
           'page-id' => $this->papaya()->request->pageId
         ]
@@ -234,18 +239,26 @@ namespace Papaya\Pixelcounter {
       $dialog->fields[] = $field = new Input(
         new TranslatedText('Website Id'), self::FIELD_WEBSITE_ID, 10, self::_DEFAULTS[self::FIELD_WEBSITE_ID]
       );
+      $dialog->fields[] = $field = new Dialog\Field\Select\Radio(
+        new TranslatedText('Track Preview'),
+        self::FIELD_ALLOW_PREVIEW,
+        new TranslatedList([0 => 'no', 1 => 'yes']),
+        FALSE
+      );
 
       $dialog->fields[] = $group = new Dialog\Field\Group(new TranslatedText('Cookies'));
       $group->fields[] = $field = new Dialog\Field\Select\Radio(
         new TranslatedText('Use Cookies'),
         self::FIELD_USE_COOKIES,
-        new TranslatedList(['no', 'yes'])
+        new TranslatedList(['no', 'yes']),
+        FALSE
       );
       $field->setDefaultValue(self::_DEFAULTS[self::FIELD_USE_COOKIES]);
       $group->fields[] = $field = new Dialog\Field\Select\Radio(
         new TranslatedText('Secure Cookies Only'),
         self::FIELD_SECURE_COOKIES,
-        new TranslatedList(['no', 'yes'])
+        new TranslatedList(['no', 'yes']),
+        FALSE
       );
       $field->setDefaultValue(self::_DEFAULTS[self::FIELD_SECURE_COOKIES]);
       $group->fields[] = $field = new Input(
@@ -255,16 +268,16 @@ namespace Papaya\Pixelcounter {
         self::_DEFAULTS[self::FIELD_COOKIES_DOMAIN]
       );
       $group->fields[] = $field = new Input(
+        new TranslatedText('Path'),
+        self::FIELD_COOKIES_PATH,
+        200,
+        self::_DEFAULTS[self::FIELD_COOKIES_PATH]
+      );
+      $group->fields[] = $field = new Input(
         new TranslatedText('Prefix'),
         self::FIELD_COOKIES_PREFIX,
         10,
         self::_DEFAULTS[self::FIELD_COOKIES_PREFIX]
-      );
-      $group->fields[] = $field = new Input(
-        new TranslatedText('Prefix'),
-        self::FIELD_COOKIES_PATH,
-        200,
-        self::_DEFAULTS[self::FIELD_COOKIES_PATH]
       );
       $group->fields[] = $field = new Input(
         new TranslatedText('Visitor Cookie Timeout'),
