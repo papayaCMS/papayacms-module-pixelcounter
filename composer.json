@@ -1,5 +1,6 @@
 {
   "name": "papaya/module-pixelcounter",
+  "license": "GPL-2.0",
   "extra" : {
     "document-root" : "htdocs/"
   },
