@@ -14,9 +14,8 @@ namespace Papaya\Pixelcounter {
   use Papaya\XML\Element;
   use base_pixelcounter;
 
-  class MatomoBox implements ApplicationAccess, Appendable, EditablePlugin {
+  class MatomoBox extends \Papaya\Application\BaseObject implements Appendable, EditablePlugin {
 
-    use ApplicationAccess\Aggregation;
     use EditablePlugin\Content\Aggregation;
 
     const FIELD_SERVER_URL = 'matomo-server-url';
