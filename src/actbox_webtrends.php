@@ -8,11 +8,6 @@
 */
 
 /**
-* Basic class Aktion box
-*/
-require_once(PAPAYA_INCLUDE_PATH.'system/base_actionbox.php');
-
-/**
 * Action box for WebTrends statistik embeds
 *
 * @package Papaya-Commercial
@@ -92,7 +87,6 @@ class actionbox_webtrends extends base_actionbox {
           );
         }
         $result .= '</path>';
-        include_once(PAPAYA_INCLUDE_PATH.'system/base_surfer.php');
         $surfer = base_surfer::getInstance(FALSE);
         $result .= sprintf(
           '<surfer registered="%s" />'.LF,

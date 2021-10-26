@@ -8,11 +8,6 @@
  */
 
 /**
- * Basic class Aktion box
- */
-require_once(PAPAYA_INCLUDE_PATH.'system/base_actionbox.php');
-
-/**
  * Action box for eTracker statistik embeds
  *
  * @package Papaya-Commercial
@@ -193,7 +188,6 @@ class actionbox_etracker extends base_actionbox {
     if (isset($viewModes)) {
       $this->_viewModes = $viewModes;
     } elseif (NULL === $this->_viewModes) {
-      include_once(PAPAYA_INCLUDE_PATH.'system/base_viewlist.php');
       $viewList = new base_viewlist();
       $viewList->papaya($this->papaya());
       $viewList->loadViewModesList();

@@ -18,11 +18,6 @@
 */
 
 /**
-* Basic class module
-*/
-require_once(PAPAYA_INCLUDE_PATH.'system/base_module.php');
-
-/**
 * Pixelcounter data management
 *
 * @package Papaya-Commercial
@@ -66,4 +61,3 @@ class edmodule_pixelcounter extends base_module {
     }
   }
 }
-

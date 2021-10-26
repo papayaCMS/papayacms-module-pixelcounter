@@ -16,7 +16,6 @@
 * @subpackage Pixelcounter
 * @version $Id: base_pixelcounter.php 2 2013-12-09 14:16:49Z weinert $
 */
-require_once(PAPAYA_INCLUDE_PATH.'system/sys_base_db.php');
 
 /**
 * Basic Pixelcounter database functions
@@ -296,4 +295,3 @@ class base_pixelcounter extends base_db {
     return $result;
   }
 }
-

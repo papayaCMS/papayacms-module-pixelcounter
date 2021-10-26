@@ -8,11 +8,6 @@
 */
 
 /**
-* Basic class Aktion box
-*/
-require_once(PAPAYA_INCLUDE_PATH.'system/base_actionbox.php');
-
-/**
 * Action box for IVW counter
 *
 * @package module_ivw
@@ -110,7 +105,6 @@ class actionbox_ivw extends base_actionbox {
           $result .= '<!-- /SZMFRABO -->'."\n";
         }
         if ($this->data['multiclient_active'] && !empty($this->data['multiclient_server'])) {
-          include_once(PAPAYA_INCLUDE_PATH.'system/base_surfer.php');
           $surfer = base_surfer::getInstance(FALSE);
           if ($surfer->isValid) {
             $surferHash = md5($surfer->surferId.$this->data['multiclient_salt']);

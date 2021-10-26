@@ -77,10 +77,7 @@ class admin_pixelcounter extends base_pixelcounter {
   * @access public
   */
   function execute() {
-    include_once(PAPAYA_INCLUDE_PATH.'system/base_language_select.php');
     $this->lngSelect = base_language_select::getInstance();
-
-    include_once(PAPAYA_INCLUDE_PATH.'system/base_topic_edit.php');
     $this->page = new base_topic_edit();
 
     if (isset($this->params['cmd'])) {
@@ -238,7 +235,6 @@ class admin_pixelcounter extends base_pixelcounter {
   }
 
   function getXMLButtons() {
-    include_once(PAPAYA_INCLUDE_PATH.'system/base_btnbuilder.php');
     $menu = new base_btnbuilder();
     $menu->addButton(
       'Add subpage',
@@ -298,7 +294,6 @@ class admin_pixelcounter extends base_pixelcounter {
 
   function getXMLPageTree() {
     $result = '';
-    include_once(PAPAYA_INCLUDE_PATH.'system/papaya_topic_tree.php');
     $this->topicTree = new papaya_topic_tree($this->paramName);
     $this->topicTree->images = $this->images;
     $this->topicTree->layout = $this->layout;
@@ -601,7 +596,6 @@ class admin_pixelcounter extends base_pixelcounter {
 
   function _initCounterDataDialog($forceSubPageDialog) {
     if (!(isset($this->_dialogCounterData) && is_object($this->_dialogCounterData))) {
-      include_once(PAPAYA_INCLUDE_PATH.'system/base_dialog.php');
       if ($forceSubPageDialog || isset($this->params['subpage_ident'])) {
         if (isset($this->params['subpage_ident']) &&
             isset($this->_subPages[$this->params['subpage_ident']])) {
@@ -677,7 +671,6 @@ class admin_pixelcounter extends base_pixelcounter {
 
   function _initCounterDataParameterDialog() {
     if (!(isset($this->_dialogCounterData) && is_object($this->_dialogCounterData))) {
-      include_once(PAPAYA_INCLUDE_PATH.'system/base_dialog.php');
       if (isset($this->params['parameter_name']) &&
           isset($this->_parameters[$this->params['parameter_name']])) {
         $hidden = array(
@@ -951,7 +944,6 @@ class admin_pixelcounter extends base_pixelcounter {
   function getSubPageDeleteDialog() {
     if (isset($this->params['subpage_ident']) &&
         isset($this->_subPages[$this->params['subpage_ident']])) {
-      include_once(PAPAYA_INCLUDE_PATH.'system/base_msgdialog.php');
       $hidden = array(
         'cmd' => 'delete_subpage',
         'page_id' => $this->pageId,
@@ -1074,7 +1066,6 @@ class admin_pixelcounter extends base_pixelcounter {
   function getParameterDeleteDialog() {
     if (isset($this->params['parameter_name']) &&
         isset($this->_parameters[$this->params['parameter_name']])) {
-      include_once(PAPAYA_INCLUDE_PATH.'system/base_msgdialog.php');
       $hidden = array(
         'cmd' => 'delete_parameter',
         'page_id' => $this->pageId,

@@ -8,11 +8,6 @@
 */
 
 /**
-* Basic class Aktion box
-*/
-require_once(PAPAYA_INCLUDE_PATH.'system/base_actionbox.php');
-
-/**
 * Action box for Omniture statistik embeds
 *
 * @package Papaya-Commercial
@@ -100,7 +95,6 @@ class actionbox_omniture extends base_actionbox {
           );
         }
         $result .= '</path>';
-        include_once(PAPAYA_INCLUDE_PATH.'system/base_surfer.php');
         $surfer = base_surfer::getInstance(FALSE);
         $result .= sprintf(
           '<surfer registered="%s" />'.LF,
